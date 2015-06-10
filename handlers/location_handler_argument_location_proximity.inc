@@ -17,7 +17,7 @@ class location_handler_argument_location_proximity extends views_handler_argumen
   public function option_definition() {
     $options = parent::option_definition();
     // As only us and uk use miles, make km the default otherwise.
-    $country = variable_get('location_default_country', 'us');
+    $country = \Drupal::config('location.settings')->get('location_default_country');
     $options['search_units'] = array('default' => ($country == 'us' || $country == 'uk' ? 'mile' : 'km'));
     $options['search_method'] = array('default' => 'mbr');
     $options['type'] = array('default' => 'postal');
@@ -84,7 +84,7 @@ class location_handler_argument_location_proximity extends views_handler_argumen
 
     if ($this->options['type'] == 'postal') {
       if (!isset($this->value['country'])) {
-        $this->value['country'] = variable_get('location_default_country', 'us');
+        $this->value['country'] = \Drupal::config('location.settings')->get('location_default_country');
       }
       // Zip code lookup.
       if (!empty($this->value['postal_code']) && !empty($this->value['country'])) {
@@ -125,7 +125,7 @@ class location_handler_argument_location_proximity extends views_handler_argumen
         if ($argument->field == 'distance') {
           $arg_parts = explode('_', $this->view->args[$argument->position]);
           if (count($arg_parts) == 3) {
-            $this->value['country'] = drupal_strtolower($arg_parts[0]);
+            $this->value['country'] = \Drupal\Component\Utility\Unicode::strtolower($arg_parts[0]);
             $this->value['postal_code'] = $arg_parts[1];
             $this->value['search_distance'] = $arg_parts[2];
           }

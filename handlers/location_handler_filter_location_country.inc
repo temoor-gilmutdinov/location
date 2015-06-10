@@ -48,7 +48,7 @@ class location_handler_filter_location_country extends views_handler_filter_in_o
         $which = in_array($this->operator, $this->operator_values(1)) ? 'value' : 'none';
       }
       else {
-        $source = 'edit-' . drupal_clean_css_identifier($this->options['expose']['operator']);
+        $source = 'edit-' . \Drupal\Component\Utility\Html::cleanCssIdentifier($this->options['expose']['operator']);
       }
 
       if (!empty($this->options['expose']['reduce'])) {

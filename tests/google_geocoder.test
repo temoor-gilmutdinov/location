@@ -23,8 +23,8 @@ class LocationGoogleGeocoderTest extends LocationTestCase {
 
   public function setUp() {
     parent::setUp('location', 'location_node', 'devel');
-    variable_set('location_geocode_google_apikey', TESTING_APIKEY_GOOGLE_MAPS);
-    $web_admin = $this->drupalCreateUser(array_keys(module_invoke_all('permission')));
+    \Drupal::config('location.settings')->set('location_geocode_google_apikey', TESTING_APIKEY_GOOGLE_MAPS)->save();
+    $web_admin = $this->drupalCreateUser(array_keys(\Drupal::moduleHandler()->invokeAll('permission')));
     $this->drupalLogin($web_admin);
   }
 
@@ -59,7 +59,9 @@ class LocationGoogleGeocoderTest extends LocationTestCase {
     );
 
     // Reload the node.
-    $node2 = node_load($node->nid, NULL, TRUE);
+    $node2 = // @FIXME
+// To reset the node cache, use EntityStorageInterface::resetCache().
+\Drupal::entityManager()->getStorage('node')->loadRevision(NULL);
 
     $location = $node2->locations[0];
     // @todo fixme

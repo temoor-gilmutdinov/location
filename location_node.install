@@ -12,16 +12,31 @@ function location_node_uninstall() {
   // Delete node settings.
   $result = db_query("SELECT name FROM {variable} WHERE name LIKE 'location_settings_node_%'")->fetchCol();
   foreach ($result as $var) {
-    variable_del($var);
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del($var);
+
   }
 
   // Delete compatibility variables.
   $result = db_query("SELECT name FROM {variable} WHERE name LIKE 'location_maxnum_%'")->fetchCol();
   foreach ($result as $var) {
-    variable_del($var);
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del($var);
+
   }
   $result = db_query("SELECT name FROM {variable} WHERE name LIKE 'location_defaultnum_%'")->fetchCol();
   foreach ($result as $var) {
-    variable_del($var);
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del($var);
+
   }
 }

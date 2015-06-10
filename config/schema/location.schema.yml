@@ -1,0 +1,56 @@
+location.settings:
+  type: mapping
+  label: Settings
+  mapping:
+    location_usegmap:
+      type: boolean
+    location_locpick_macro:
+      type: string
+    location_default_country:
+      type: string
+    location_jit_geocoding:
+      type: boolean
+    location_use_province_abbreviation:
+      type: integer
+    location_maplink_external:
+      type: integer
+    location_maplink_external_method:
+      type: string
+    location_display_location:
+      type: integer
+    location_geocode_au_yahoo_appid:
+      type: string
+    location_geocode_us_yahoo_appid:
+      type: string
+    location_geocode_google_delay:
+      type: integer
+    location_geocode_google_apikey:
+      type: string
+    location_geocode_nz_yahoo_appid:
+      type: string
+    location_geocode_ca_geocoder_apikey:
+      type: 'NULL'
+    location_update_5301_retrofit:
+      type: boolean
+    location_update_5304_done:
+      type: boolean
+    location_update_5305_done:
+      type: boolean
+    location_user_weight:
+      type: integer
+    location_user_collapsible:
+      type: boolean
+    location_user_collapsed:
+      type: boolean
+    location_update_5306_done:
+      type: boolean
+    location_geocode_uk:
+      type: string
+    location_geocode_gb:
+      type: string
+    location_map_link_uk:
+      type: string
+    location_map_link_gb:
+      type: string
+    location_geocode_google_minimum_accuracy:
+      type: string

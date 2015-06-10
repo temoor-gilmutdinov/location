@@ -404,7 +404,7 @@ function location_geocode_ca_geocoder_settings() {
     '#title' => t('Geocoder API Key'),
     '#size' => 64,
     '#maxlength' => 128,
-    '#default_value' => variable_get('location_geocode_ca_geocoder_apikey', ''),
+    '#default_value' => \Drupal::config('location.settings')->get('location_geocode_ca_geocoder_apikey'),
     '#description' => t(
       'In order to use the Geocoder.ca API geocoding web-service, if you are a commercial entity or wish to use the service without attribution, you will need a Geocoder API Key.  You can obtain one at the !sign_up_link for the !geocoder_api.',
       array(
@@ -427,8 +427,8 @@ function location_geocode_ca_geocoder_settings() {
 function location_geocode_ca_geocoder($location = array()) {
   $service_url = "http://geocoder.ca/?geoit=XML";
 
-  if (variable_get('location_geocode_ca_geocoder_apikey', '')) {
-    $service_url .= '&auth=' . variable_get('location_geocode_ca_geocoder_apikey', NULL) . '&locate=';
+  if (\Drupal::config('location.settings')->get('location_geocode_ca_geocoder_apikey')) {
+    $service_url .= '&auth=' . \Drupal::config('location.settings')->get('location_geocode_ca_geocoder_apikey') . '&locate=';
   }
   else {
     $service_url .= '&locate=';
@@ -438,7 +438,15 @@ function location_geocode_ca_geocoder($location = array()) {
   unset($location['postal_code'], $location['country']);
   $address = strtr(location_address2singleline($location), array(', ' => ' '));
 
-  $http_reply = drupal_http_request($service_url . urlencode($address));
+  // @FIXME
+// drupal_http_request() has been replaced by the Guzzle HTTP client, which is bundled
+// with Drupal core.
+// 
+// 
+// @see https://www.drupal.org/node/1862446
+// @see http://docs.guzzlephp.org/en/latest
+// $http_reply = drupal_http_request($service_url . urlencode($address));
+
 
   if ($http_reply->code == 400) {
     return NULL;

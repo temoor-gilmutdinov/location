@@ -1,0 +1,40 @@
+location.autocomplete:
+  path: /location/autocomplete
+  defaults:
+    _content: '\Drupal\location\Controller\DefaultController::_location_autocomplete'
+  requirements:
+    _permission: 'access content'
+location.admin_settings:
+  path: /admin/config/content/location
+  defaults:
+    _title: Location
+    _form: \Drupal\location\Form\LocationAdminSettings
+  requirements:
+    _permission: 'administer site configuration'
+location.map_link_options_form:
+  path: /admin/config/content/location/maplinking
+  defaults:
+    _title: 'Map links'
+    _form: \Drupal\location\Form\LocationMapLinkOptionsForm
+  requirements:
+    _permission: 'administer site configuration'
+location.geocoding_options_form:
+  path: /admin/config/content/location/geocoding
+  defaults:
+    _title: 'Geocoding options'
+    _form: \Drupal\location\Form\LocationGeocodingOptionsForm
+  requirements:
+    _permission: 'administer site configuration'
+location.geocoding_parameters_page:
+  path: '/admin/config/content/location/geocoding/{country_iso}/{service}'
+  defaults:
+    _content: '\Drupal\location\Controller\DefaultController::location_geocoding_parameters_page'
+  requirements:
+    _permission: 'administer site configuration'
+location.util_form:
+  path: /admin/config/content/location/util
+  defaults:
+    _title: 'Location utilities'
+    _form: \Drupal\location\Form\LocationUtilForm
+  requirements:
+    _permission: 'administer site configuration'

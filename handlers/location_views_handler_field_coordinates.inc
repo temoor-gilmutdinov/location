@@ -20,7 +20,7 @@ class location_views_handler_field_coordinates extends location_views_handler_fi
    */
   public function render($values) {
     if ($this->options['style'] == 'dms') {
-      return theme('location_latitude_dms', array('latitude' => $values->{$this->field_alias})) . ', ' . theme(
+      return _theme('location_latitude_dms', array('latitude' => $values->{$this->field_alias})) . ', ' . _theme(
         'location_longitude_dms',
         array('longitude' => $values->{$this->aliases['longitude']})
       );

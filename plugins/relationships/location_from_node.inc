@@ -59,8 +59,8 @@ function location_location_from_node_context($context, $conf) {
     elseif ($conf['location_type'] == 'location_cck' && isset($conf['location_cck_field_name'])) {
       $field_name = $conf['location_cck_field_name'];
       $field_offset = isset($conf['location_cck_field_offset']) ? $conf['location_cck_field_offset'] : 0;
-      if (isset($context->data->{$field_name}[LANGUAGE_NONE][$field_offset]['lid'])) {
-        $location = $context->data->{$field_name}[LANGUAGE_NONE][$field_offset];
+      if (isset($context->data->{$field_name}[\Drupal\Core\Language\Language::LANGCODE_NOT_SPECIFIED][$field_offset]['lid'])) {
+        $location = $context->data->{$field_name}[\Drupal\Core\Language\Language::LANGCODE_NOT_SPECIFIED][$field_offset];
       }
     }
   }
@@ -101,14 +101,19 @@ function location_location_from_node_context($context, $conf) {
  * selected radio.
  */
 function location_location_from_node_settings_form($form, &$form_state) {
-  ctools_include('dependent');
+  // @FIXME
+// Most CTools APIs have been moved into core.
+// 
+// @see https://www.drupal.org/node/2164623
+// ctools_include('dependent');
+
   $location_type_options = array();
   $offset_options = array();
   for ($i = 0; $i < 10; $i++) {
     $offset_options[$i] = $i;
   }
 
-  if (module_exists('location_node')) {
+  if (\Drupal::moduleHandler()->moduleExists('location_node')) {
     $location_type_options['location_node'] = t('Use location directly saved in the node for this relationship');
 
     $form['location_node_offset'] = array(
@@ -124,13 +129,20 @@ function location_location_from_node_settings_form($form, &$form_state) {
       '#weight' => 4,
     );
   }
-  if (module_exists('location_cck')) {
+  if (\Drupal::moduleHandler()->moduleExists('location_cck')) {
     $cck_options = array();
-    foreach (field_info_fields() as $field) {
-      if ($field['type'] == 'location') {
-        $cck_options[$field['field_name']] = check_plain($field['field_name']);
-      }
-    }
+    // @FIXME
+// Fields and field instances are now exportable configuration entities, and
+// the Field Info API has been removed.
+// 
+// 
+// @see https://www.drupal.org/node/2012896
+// foreach (field_info_fields() as $field) {
+//       if ($field['type'] == 'location') {
+//         $cck_options[$field['field_name']] = check_plain($field['field_name']);
+//       }
+//     }
+
     if (!empty($cck_options)) {
       $form['location_cck_field_name'] = array(
         '#title' => t('Location CCK field to use for this relationship'),

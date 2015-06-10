@@ -1,0 +1,19 @@
+location.admin_settings:
+  route_name: location.admin_settings
+  title: 'Main settings'
+  base_route: location.admin_settings
+location.map_link_options_form:
+  route_name: location.map_link_options_form
+  title: 'Map links'
+  weight: 1
+  base_route: location.admin_settings
+location.geocoding_options_form:
+  route_name: location.geocoding_options_form
+  title: 'Geocoding options'
+  weight: 2
+  base_route: location.admin_settings
+location.util_form:
+  route_name: location.util_form
+  title: 'Location utilities'
+  weight: 3
+  base_route: location.admin_settings

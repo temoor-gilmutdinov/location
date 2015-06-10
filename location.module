@@ -8,6 +8,9 @@
  * some options are configured through an interface provided by location.module.
  */
 
+use Drupal\Core\Url;
+use Drupal\Core\Routing\RouteMatchInterface;
+
 define('LOCATION_PATH', drupal_get_path('module', 'location'));
 
 define('LOCATION_LATLON_UNDEFINED', 0);
@@ -19,68 +22,7 @@ define('LOCATION_LATLON_JIT_GEOCODING', 4);
 define('LOCATION_USER_DONT_COLLECT', 0);
 define('LOCATION_USER_COLLECT', 1);
 
-include_once DRUPAL_ROOT . '/' . LOCATION_PATH . '/location.inc';
-
-/**
- * Implements hook_menu().
- */
-function location_menu() {
-  $items = array();
-
-  $items['location/autocomplete'] = array(
-    'access arguments' => array('access content'),
-    'page callback' => '_location_autocomplete',
-    'type' => MENU_CALLBACK,
-  );
-
-  $items['admin/config/content/location'] = array(
-    'title' => 'Location',
-    'description' => 'Settings for Location module',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('location_admin_settings'),
-    'file' => 'location.admin.inc',
-    'access arguments' => array('administer site configuration'),
-  );
-  $items['admin/config/content/location/main'] = array(
-    'title' => 'Main settings',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-  );
-  $items['admin/config/content/location/maplinking'] = array(
-    'title' => 'Map links',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('location_map_link_options_form'),
-    'access arguments' => array('administer site configuration'),
-    'file' => 'location.admin.inc',
-    'type' => MENU_LOCAL_TASK,
-    'weight' => 1,
-  );
-  $items['admin/config/content/location/geocoding'] = array(
-    'title' => 'Geocoding options',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('location_geocoding_options_form'),
-    'access arguments' => array('administer site configuration'),
-    'file' => 'location.admin.inc',
-    'type' => MENU_LOCAL_TASK,
-    'weight' => 2,
-  );
-  $items['admin/config/content/location/geocoding/%/%'] = array(
-    'page callback' => 'location_geocoding_parameters_page',
-    'page arguments' => array(5, 6),
-    'access arguments' => array('administer site configuration'),
-    'type' => MENU_CALLBACK,
-  );
-  $items['admin/config/content/location/util'] = array(
-    'title' => 'Location utilities',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('location_util_form'),
-    'access arguments' => array('administer site configuration'),
-    'file' => 'location.admin.inc',
-    'type' => MENU_LOCAL_TASK,
-    'weight' => 3,
-  );
-
-  return $items;
-}
+include_once \Drupal::root() . '/' . LOCATION_PATH . '/location.inc';
 
 /**
  * Location API.
@@ -90,55 +32,38 @@ function location_api_variant() {
 }
 
 /**
- * Implements hook_permission().
- */
-function location_permission() {
-  return array(
-    'view location directory' => array(
-      'title' => t('View location directory'),
-    ),
-    'view node location table' => array(
-      'title' => t('View node location table'),
-    ),
-    'view user location table' => array(
-      'title' => t('View user location table'),
-    ),
-    'submit latitude/longitude' => array(
-      'title' => t('Submit latitude/longitude'),
-    ),
-  );
-}
-
-/**
  * Implements hook_help().
  *
  * @TODO: check/fix this: admin/content/configure/types (still use %? still same url?)
  */
-function location_help($path, $arg) {
-  switch ($path) {
-    case 'admin/help#location':
+function location_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.location':
       $output = '<p>' . t(
           'The location module allows you to associate a geographic location with content and users. Users can do proximity searches by postal code.  This is useful for organizing communities that have a geographic presence.'
         ) . '</p>';
       $output .= '<p>' . t(
           'To administer locative information for content, use the content type administration page.  To support most location enabled features, you will need to install the country specific include file.  To support postal code proximity searches for a particular country, you will need a database dump of postal code data for that country.  As of June 2007 only U.S. and German postal codes are supported.'
         ) . '</p>';
+      // @FIXME
+// url() expects a route name or an external URI.
       $output .= t(
-          '<p>You can</p>
-          <ul>
-          <li>administer locative information at <a href="@admin-node-configure-types">Administer &gt;&gt; Content management &gt;&gt; Content types</a> to configure a type and see the locative information.</li>
-          <li>administer location at <a href="@admin-settings-location">Administer &gt;&gt; Site configuration &gt;&gt; Location</a>.</li>
-          <li>use a database dump for a U.S. and/or German postal codes table that can be found at <a href="@external-http-cvs-drupal-org">zipcode database</a>.</li>
-          ',
-          array(
-            '@admin-node-configure-types' => url('admin/content/types'),
-            '@admin-settings-location' => url('admin/config/content/location'),
-            '@external-http-cvs-drupal-org' => 'http://cvs.drupal.org/viewcvs/drupal/contributions/modules/location/database/'
-          )
-        ) . '</ul>';
+           '<p>You can</p>
+           <ul>
+           <li>administer locative information at <a href="@admin-node-configure-types">Administer &gt;&gt; Content management &gt;&gt; Content types</a> to configure a type and see the locative information.</li>
+           <li>administer location at <a href="@admin-settings-location">Administer &gt;&gt; Site configuration &gt;&gt; Location</a>.</li>
+           <li>use a database dump for a U.S. and/or German postal codes table that can be found at <a href="@external-http-cvs-drupal-org">zipcode database</a>.</li>
+           ',
+           [
+             '@admin-node-configure-types' => Url::fromRoute('system.admin_content'),
+             '@admin-settings-location' => Url::fromRoute('location.admin_settings'),
+             '@external-http-cvs-drupal-org' => 'http://cvs.drupal.org/viewcvs/drupal/contributions/modules/location/database/'
+           ]
+         ) . '</ul>';
+
       $output .= '<p>' . t(
           'For more information read the configuration and customization handbook <a href="@location">Location page</a>.',
-          array('@location' => 'http://www.drupal.org/handbook/modules/location/')
+          ['@location' => 'http://www.drupal.org/handbook/modules/location/']
         ) . '</p>';
 
       return $output;
@@ -205,7 +130,7 @@ function theme_location_element($variables) {
   // Prevent spurious "Array" from appearing.
   unset($element['#value']);
 
-  return theme('fieldset', array('element' => $element));
+  return _theme('fieldset', array('element' => $element));
 }
 
 /**
@@ -280,7 +205,15 @@ function location_ctools_plugin_directory($module, $plugin) {
  */
 function _location_process_location($element, $form_state) {
   // This is TRUE if we are processing a form that already contains values, such as during an AJAX call.
-  drupal_add_css(drupal_get_path('module', 'location') . '/location.css');
+  // @FIXME
+// CSS, JavaScript, and libraries are now attached directly to render arrays
+// using the #attached property. drupal_add_css() is internal and should never be
+// called directly.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// drupal_add_css(drupal_get_path('module', 'location') . '/location.css');
+
   $element['#tree'] = TRUE;
 
   if (!isset($element['#title'])) {
@@ -373,7 +306,7 @@ function _location_process_location($element, $form_state) {
   }
 
   // @@@ Split into submit and view permissions?
-  if (user_access('submit latitude/longitude') && $fsettings['locpick']['collect']) {
+  if (\Drupal::currentUser()->hasPermission('submit latitude/longitude') && $fsettings['locpick']['collect']) {
     $element['locpick'] = array('#weight' => $fsettings['locpick']['weight']);
 
     if (location_has_coordinates($defaults, FALSE)) {
@@ -439,9 +372,9 @@ function _location_process_location($element, $form_state) {
       ),
       '#suffix' => '</div>',
     );
-    if (function_exists('gmap_get_auto_mapid') && variable_get('location_usegmap', FALSE)) {
+    if (function_exists('gmap_get_auto_mapid') && \Drupal::config('location.settings')->get('location_usegmap')) {
       $mapid = gmap_get_auto_mapid();
-      $map = array_merge(gmap_defaults(), gmap_parse_macro(variable_get('location_locpick_macro', '[gmap]')));
+      $map = array_merge(gmap_defaults(), gmap_parse_macro(\Drupal::config('location.settings')->get('location_locpick_macro')));
       $map['id'] = $mapid;
       $map['points'] = array();
       $map['pointsOverlays'] = array();
@@ -510,7 +443,7 @@ function _location_process_location($element, $form_state) {
     }
   }
 
-  drupal_alter('location_element', $element);
+  \Drupal::moduleHandler()->alter('location_element', $element);
 
   return $element;
 }
@@ -621,7 +554,7 @@ function theme_location_settings($variables) {
   $element['country']['default']['#required'] = TRUE;
   unset($element['country']['collect']['#options'][0]);
 
-  foreach (element_children($element) as $key) {
+  foreach (\Drupal\Core\Render\Element::children($element) as $key) {
     $element[$key]['weight']['#attributes']['class'] = array('location-settings-weight');
     unset($element[$key]['default']['#title']);
     $row = array();
@@ -644,9 +577,16 @@ function theme_location_settings($variables) {
     unset($rows[$k]['#weight']);
   }
 
-  drupal_add_tabledrag('location-settings-table', 'order', 'sibling', 'location-settings-weight');
+  // @FIXME
+// TableDrag is now attached with the #tabledrag property of certain render
+// arrays. drupal_add_tabledrag() is now internal and should never be called directly.
+// 
+// 
+// @see https://www.drupal.org/node/2160571
+// drupal_add_tabledrag('location-settings-table', 'order', 'sibling', 'location-settings-weight');
 
-  $output = theme(
+
+  $output = _theme(
     'table',
     array(
       'header' => $header,
@@ -737,7 +677,7 @@ function location_locationapi(&$obj, $op, $a3 = NULL, $a4 = NULL, $a5 = NULL) {
         'city' => array('default' => '', 'collect' => 0, 'weight' => 8),
         'province' => array('default' => '', 'collect' => 0, 'weight' => 10, 'widget' => 'autocomplete'),
         'postal_code' => array('default' => '', 'collect' => 0, 'weight' => 12),
-        'country' => array('default' => variable_get('location_default_country', 'us'), 'collect' => 1, 'weight' => 14),
+        'country' => array('default' => \Drupal::config('location.settings')->get('location_default_country'), 'collect' => 1, 'weight' => 14),
         'locpick' => array('default' => FALSE, 'collect' => 1, 'weight' => 20, 'nodiff' => TRUE),
         'latitude' => array('default' => 0),
         'longitude' => array('default' => 0),
@@ -861,7 +801,12 @@ function location_locationapi(&$obj, $op, $a3 = NULL, $a4 = NULL, $a5 = NULL) {
             $country = $a5['country']['default'];
           }
           else {
-            $country = variable_get('site_default_country', 'us');
+            // @FIXME
+// // @FIXME
+// // This looks like another module's variable. You'll need to rewrite this call
+// // to ensure that it uses the correct configuration object.
+// $country = variable_get('site_default_country', 'us');
+
           }
           switch ($settings['widget']) {
             // @codingStandardsIgnoreStart
@@ -891,7 +836,15 @@ function location_locationapi(&$obj, $op, $a3 = NULL, $a4 = NULL, $a5 = NULL) {
 
             case 'autocomplete':
             default:
-              drupal_add_js(drupal_get_path('module', 'location') . '/location_autocomplete.js');
+              // @FIXME
+// CSS, JavaScript, and libraries are now attached directly to render arrays
+// using the #attached property. drupal_add_js() is internal and should never be
+// called directly.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// drupal_add_js(drupal_get_path('module', 'location') . '/location_autocomplete.js');
+
 
               return array(
                 '#type' => 'textfield',
@@ -1003,20 +956,36 @@ function location_locationapi(&$obj, $op, $a3 = NULL, $a4 = NULL, $a5 = NULL) {
  * Page callback.
  */
 function location_geocoding_parameters_page($country_iso, $service) {
-  drupal_set_title(t('Configure parameters for %service geocoding', array('%service' => $service)), PASS_THROUGH);
+  // @FIXME
+// drupal_set_title() has been removed. There are now a few ways to set the title
+// dynamically, depending on the situation.
+// 
+// 
+// @see https://www.drupal.org/node/2067859
+// drupal_set_title(t('Configure parameters for %service geocoding', array('%service' => $service)), PASS_THROUGH);
+
 
   $breadcrumbs = drupal_get_breadcrumb();
-  $breadcrumbs[] = l(t('Location'), 'admin/config/content/location');
-  $breadcrumbs[] = l(t('Geocoding'), 'admin/config/content/location/geocoding');
+  // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// $breadcrumbs[] = l(t('Location'), 'admin/config/content/location');
+
+  // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// $breadcrumbs[] = l(t('Geocoding'), 'admin/config/content/location/geocoding');
+
   $countries = location_get_iso3166_list();
-  $breadcrumbs[] = l(
-    $countries[$country_iso],
-    'admin/config/content/location/geocoding',
-    array('fragment' => $country_iso)
-  );
+  // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// $breadcrumbs[] = l(
+//     $countries[$country_iso],
+//     'admin/config/content/location/geocoding',
+//     array('fragment' => $country_iso)
+//   );
+
   drupal_set_breadcrumb($breadcrumbs);
 
-  return drupal_get_form('location_geocoding_parameters_form', $country_iso, $service);
+  return \Drupal::formBuilder()->getForm('location_geocoding_parameters_form', $country_iso, $service);
 }
 
 /**
@@ -1142,7 +1111,7 @@ function location_save_locations(&$locations, $criteria) {
       )->fetchField();
 
       if ($count !== FALSE && $count == 0) {
-        watchdog('location', 'Deleting unreferenced location with LID %lid.', array('%lid' => $check));
+        \Drupal::logger('location')->notice('Deleting unreferenced location with LID %lid.', array('%lid' => $check));
         $location = array('lid' => $check);
         location_invoke_locationapi($location, 'delete');
         db_delete('location')
@@ -1179,7 +1148,7 @@ function location_load_location($lid) {
   // JIT Geocoding
   // Geocodes during load, useful with bulk imports.
   if (isset($location['source']) && $location['source'] == LOCATION_LATLON_JIT_GEOCODING) {
-    if (variable_get('location_jit_geocoding', FALSE)) {
+    if (\Drupal::config('location.settings')->get('location_jit_geocoding')) {
       _location_geo_logic($location, array('street' => 1), array());
       db_update('location')
         ->fields(
@@ -1361,7 +1330,7 @@ function location_has_coordinates($location, $canonical = FALSE) {
  */
 function location_invoke_locationapi(&$location, $op, $a3 = NULL, $a4 = NULL, $a5 = NULL) {
   $return = array();
-  foreach (module_implements('locationapi') as $name) {
+  foreach (\Drupal::moduleHandler()->getImplementations('locationapi') as $name) {
     $function = $name . '_locationapi';
     $result = $function($location, $op, $a3, $a4, $a5);
     if (isset($result) && is_array($result)) {
@@ -1508,7 +1477,7 @@ function location_save(&$location, $cow = TRUE, $criteria = array()) {
   }
 
   if (!empty($location['lid'])) {
-    watchdog('location', 'Conserving lid %lid due to uniqueness.', array('%lid' => $location['lid']));
+    \Drupal::logger('location')->notice('Conserving lid %lid due to uniqueness.', array('%lid' => $location['lid']));
     // Using a merge query instead of drupal_write_record to prevent failing to save
     // if the lid happens to not exist in {location}, which has been seen in the wild.
     // Tested in mysql, sqlite, and postgresql.
@@ -1536,7 +1505,7 @@ function location_save(&$location, $cow = TRUE, $criteria = array()) {
   }
   else {
     unset($location['lid']);
-    drupal_write_record('location', $location);
+    \Drupal::database()->insert('location')->fields($location)->execute();
   }
 
   location_invoke_locationapi($location, 'save');
@@ -1858,7 +1827,7 @@ function theme_location_longitude_dms($variables) {
  * Implements hook_token_values().
  */
 function location_token_values($type, $object = NULL) {
-  require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'location') . '/location.token.inc';
+  require_once \Drupal::root() . '/' . drupal_get_path('module', 'location') . '/location.token.inc';
 
   return _location_token_values($type, $object);
 }
@@ -1867,7 +1836,7 @@ function location_token_values($type, $object = NULL) {
  * Implements hook_token_list().
  */
 function location_token_list($type = 'all') {
-  require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'location') . '/location.token.inc';
+  require_once \Drupal::root() . '/' . drupal_get_path('module', 'location') . '/location.token.inc';
 
   return _location_token_list($type);
 }
@@ -1914,14 +1883,14 @@ function template_preprocess_location(&$variables) {
   $variables['latitude_dms'] = '';
   if (!empty($location['latitude'])) {
     $variables['latitude'] = check_plain($location['latitude']);
-    $variables['latitude_dms'] = theme('location_latitude_dms', array('latitude' => $location['latitude']));
+    $variables['latitude_dms'] = _theme('location_latitude_dms', array('latitude' => $location['latitude']));
   }
 
   $variables['longitude'] = '';
   $variables['longitude_dms'] = '';
   if (!empty($location['longitude'])) {
     $variables['longitude'] = check_plain($location['longitude']);
-    $variables['longitude_dms'] = theme('location_longitude_dms', array('longitude' => $location['longitude']));
+    $variables['longitude_dms'] = _theme('location_longitude_dms', array('longitude' => $location['longitude']));
   }
 
   // Add a country-specific template suggestion.
@@ -1937,10 +1906,7 @@ function template_preprocess_location(&$variables) {
   if (!isset($location['province_name'])) {
     $location['province_name'] = '';
   }
-  $variables['province_print'] = variable_get(
-    'location_use_province_abbreviation',
-    1
-  ) ? $location['province'] : $location['province_name'];
+  $variables['province_print'] = \Drupal::config('location.settings')->get('location_use_province_abbreviation') ? $location['province'] : $location['province_name'];
 }
 
 /**
@@ -1975,7 +1941,7 @@ function template_preprocess_locations(&$variables) {
   $variables['rawlocs'] = $locs;
 
   foreach ($locs as $location) {
-    $variables['locations'][] = theme('location', array('location' => $location, 'hide' => $variables['hide']));
+    $variables['locations'][] = _theme('location', array('location' => $location, 'hide' => $variables['hide']));
   }
 }
 
@@ -2002,14 +1968,14 @@ function location_settings($old = FALSE) {
   $form['multiple']['min'] = array(
     '#type' => 'select',
     '#title' => t('Minimum number of locations'),
-    '#options' => drupal_map_assoc(range(0, 100)),
+    '#options' => array_combine(range(0, 100), range(0, 100)),
     '#default_value' => isset($old['multiple']['min']) ? $old['multiple']['min'] : 0,
     '#description' => t('The number of locations that are required to be filled in.'),
   );
   $form['multiple']['max'] = array(
     '#type' => 'select',
     '#title' => t('Maximum number of locations'),
-    '#options' => drupal_map_assoc(range(0, 100)),
+    '#options' => array_combine(range(0, 100), range(0, 100)),
     '#default_value' => isset($old['multiple']['max']) ? $old['multiple']['max'] : 1,
     '#description' => t('The maximum number of locations that can be associated.'),
   );
@@ -2017,7 +1983,7 @@ function location_settings($old = FALSE) {
   $form['multiple']['add'] = array(
     '#type' => 'select',
     '#title' => t('Number of locations that can be added at once'),
-    '#options' => drupal_map_assoc(range(0, 100)),
+    '#options' => array_combine(range(0, 100), range(0, 100)),
     '#default_value' => isset($old['multiple']['add']) ? $old['multiple']['add'] : 1,
     '#description' => t('The number of empty location forms to show when editing.'),
   );
@@ -2110,7 +2076,7 @@ function location_form($settings, $locations) {
   else {
     $form = array(
       '#type' => 'fieldset',
-      '#title' => format_plural($numforms, 'Location', 'Locations'),
+      '#title' => \Drupal::translation()->formatPlural($numforms, 'Location', 'Locations'),
       '#tree' => TRUE,
       '#attributes' => array('class' => array('locations')),
       '#weight' => $settings['form']['weight'],
@@ -2172,7 +2138,7 @@ function location_display($settings, $locations) {
  * Location RSS item.
  */
 function location_rss_item($location, $mode = 'simple') {
-  require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'location') . '/location.georss.inc';
+  require_once \Drupal::root() . '/' . drupal_get_path('module', 'location') . '/location.georss.inc';
 
   return _location_rss_item($location, $mode);
 }

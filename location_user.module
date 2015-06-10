@@ -35,7 +35,11 @@ function location_user_form_user_admin_settings_alter(&$form, &$form_state, $for
     $settings = $form_state['values']['location_settings_user'];
   }
   else {
-    $settings = variable_get('location_settings_user', array());
+    // @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/location.settings.yml and config/schema/location.schema.yml.
+$settings = \Drupal::config('location.settings')->get('location_settings_user');
   }
 
   $form['location_settings_user'] = location_settings($settings);
@@ -97,14 +101,16 @@ function location_user_user_delete($account) {
  * Implements hook_user_view().
  */
 function location_user_user_view($account, $view_mode, $langcode) {
-  global $user;
+  $user = \Drupal::currentUser();
 
-  if ((($user->uid == $account->uid) && user_access('view own user location')) || user_access(
-      'administer users'
-    ) || user_access('view all user locations') || user_access('administer user locations')
+  if ((($user->uid == $account->uid) && \Drupal::currentUser()->hasPermission('view own user location')) || \Drupal::currentUser()->hasPermission('administer users') || \Drupal::currentUser()->hasPermission('view all user locations') || \Drupal::currentUser()->hasPermission('administer user locations')
   ) {
-    if (variable_get('location_display_location', 1) && isset($account->locations) && count($account->locations)) {
-      $settings = variable_get('location_settings_user', array());
+    if (\Drupal::config('location.settings')->get('location_display_location') && isset($account->locations) && count($account->locations)) {
+      // @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/location.settings.yml and config/schema/location.schema.yml.
+$settings = \Drupal::config('location.settings')->get('location_settings_user');
       $account->content['locations'] = location_display($settings, $account->locations);
     }
   }
@@ -116,15 +122,17 @@ function location_user_user_view($account, $view_mode, $langcode) {
  * Alter the user profile form.
  */
 function location_user_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
-  global $user;
+  $user = \Drupal::currentUser();
 
   if ($form['#user_category'] == 'account') {
     $account = $form['#user'];
-    if ((($user->uid == $account->uid) && user_access('set own user location')) || user_access(
-        'administer user locations'
-      )
+    if ((($user->uid == $account->uid) && \Drupal::currentUser()->hasPermission('set own user location')) || \Drupal::currentUser()->hasPermission('administer user locations')
     ) {
-      $settings = variable_get('location_settings_user', array());
+      // @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/location.settings.yml and config/schema/location.schema.yml.
+$settings = \Drupal::config('location.settings')->get('location_settings_user');
       $form['locations'] = location_form($settings, $account->locations);
     }
   }
@@ -136,7 +144,11 @@ function location_user_form_user_profile_form_alter(&$form, &$form_state, $form_
  * Alter the user registration form.
  */
 function location_user_form_user_register_form_alter(&$form, &$form_state, $form_id) {
-  $settings = variable_get('location_settings_user', array());
+  // @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/location.settings.yml and config/schema/location.schema.yml.
+$settings = \Drupal::config('location.settings')->get('location_settings_user');
   if (isset($settings['form']['register']) && $settings['form']['register']) {
     $form['locations'] = location_form($settings, array());
   }
@@ -150,7 +162,7 @@ function location_user_locationapi(&$obj, $op, $a3 = NULL, $a4 = NULL, $a5 = NUL
     case 'instance_links':
       foreach ($obj as $k => $v) {
         if ($v['uid'] != 0) {
-          $account = user_load($v['uid']);
+          $account = \Drupal::entityManager()->getStorage('user')->load($v['uid']);
           $obj[$k]['href'] = 'user/' . $v['uid'];
           $obj[$k]['title'] = $account->name;
           $obj[$k]['type'] = t('User location');

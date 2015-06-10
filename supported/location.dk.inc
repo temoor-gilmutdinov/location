@@ -44,23 +44,21 @@ function location_map_link_dk_findvej($location = array()) {
   if (isset($location['street']) && !empty($location['street']) &&
     isset($location['postal_code']) && !empty($location['postal_code'])
   ) {
-    return url('http://findvej.dk/' . $location['street'] . ',' . $location['postal_code']);
+    // @FIXME
+// url() expects a route name or an external URI.
+// return url('http://findvej.dk/' . $location['street'] . ',' . $location['postal_code']);
+
   }
   elseif (isset($location['street']) && !empty($location['street']) &&
     isset($location['city']) && !empty($location['city'])
   ) {
-    return url('http://findvej.dk/' . $location['street'] . ',' . $location['city']);
+    // @FIXME
+// url() expects a route name or an external URI.
+// return url('http://findvej.dk/' . $location['street'] . ',' . $location['city']);
+
   }
   elseif (location_has_coordinates($location)) {
-    return url(
-      'http://findvej.dk/',
-      array(
-        'query' => array(
-          'latitude' => $location['latitude'],
-          'longitude' => $location['longitude'],
-        ),
-      )
-    );
+    return \Drupal\Core\Url::fromUri('http://findvej.dk/');
   }
   else {
     return NULL;
@@ -97,7 +95,10 @@ function location_map_link_dk_rejseplanen($location = array()) {
 
   // If any of the key values were available, generate a URL.
   if (!empty($keys)) {
-    return url('http://www.rejseplanen.dk/bin/query.exe/mn?Z=' . implode(', ', $keys) . '&ZADR=1');
+    // @FIXME
+// url() expects a route name or an external URI.
+// return url('http://www.rejseplanen.dk/bin/query.exe/mn?Z=' . implode(', ', $keys) . '&ZADR=1');
+
   }
   else {
     return NULL;

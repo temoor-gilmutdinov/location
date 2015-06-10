@@ -10,20 +10,24 @@
  */
 function location_uninstall() {
   // Delete variables.
-  variable_del('location_default_country');
-  variable_del('location_display_location');
-  variable_del('location_usegmap');
-  variable_del('location_locpick_macro');
+  \Drupal::config('location.settings')->clear('location_default_country')->save();
+  \Drupal::config('location.settings')->clear('location_display_location')->save();
+  \Drupal::config('location.settings')->clear('location_usegmap')->save();
+  \Drupal::config('location.settings')->clear('location_locpick_macro')->save();
 
   // Delete geocoder settings.
-  db_delete('variable')
-    ->condition('name', db_like('location_geocode_') . '%', 'LIKE')
-    ->execute();
+  // @FIXME
+// db_delete('variable')
+//     ->condition('name', db_like('location_geocode_') . '%', 'LIKE')
+//     ->execute();
+
 
   // Delete maxnum settings.
-  db_delete('variable')
-    ->condition('name', db_like('location_maxnum_') . '%', 'LIKE')
-    ->execute();
+  // @FIXME
+// db_delete('variable')
+//     ->condition('name', db_like('location_maxnum_') . '%', 'LIKE')
+//     ->execute();
+
 
   cache_clear_all('variables', 'cache_bootstrap');
 }
@@ -332,10 +336,14 @@ function location_update_1() {
  * Fix a bug with the "us" entry in the "location_configured_countries" var.
  */
 function location_update_2() {
-  $configured_countries = variable_get('location_configured_countries', array());
+  // @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/location.settings.yml and config/schema/location.schema.yml.
+$configured_countries = \Drupal::config('location.settings')->get('location_configured_countries');
   if ($configured_countries['us']) {
     $configured_countries['us'] = 'us';
-    variable_set('location_configured_countries', $configured_countries);
+    \Drupal::config('location.settings')->set('location_configured_countries', $configured_countries)->save();
   }
 
   return array();
@@ -360,7 +368,7 @@ function location_update_3() {
     )
   );
 
-  if (module_exists('views')) {
+  if (\Drupal::moduleHandler()->moduleExists('views')) {
     views_invalidate_cache();
   }
 
@@ -439,10 +447,30 @@ function location_update_4() {
     ->execute();
 
   foreach (node_type_get_types() as $type) {
-    $new_setting = variable_get('location_' . $type->type, 0) ? 1 : 0;
-    variable_del('location_' . $type->type);
-    variable_set('location_maxnum_' . $type->type, $new_setting);
-    variable_set('location_defaultnum_' . $type->type, $new_setting);
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $new_setting = variable_get('location_' . $type->type, 0) ? 1 : 0;
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del('location_' . $type->type);
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_set('location_maxnum_' . $type->type, $new_setting);
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_set('location_defaultnum_' . $type->type, $new_setting);
+
   }
 }
 
@@ -487,14 +515,16 @@ function location_update_7() {
   foreach ($result as $row) {
     $value_decoded = unserialize($row->value);
     if (!in_array($value_decoded, $services)) {
-      db_update('variable')
-        ->fields(
-          array(
-            'value' => serialize($value_decoded . '|' . substr($row->name, 17)),
-          )
-        )
-        ->condition('name', $row->name)
-        ->execute();
+      // @FIXME
+// db_update('variable')
+//         ->fields(
+//           array(
+//             'value' => serialize($value_decoded . '|' . substr($row->name, 17)),
+//           )
+//         )
+//         ->condition('name', $row->name)
+//         ->execute();
+
     }
     else {
       $general_geocoders_in_use[$value_decoded] = $value_decoded;
@@ -505,24 +535,28 @@ function location_update_7() {
     "SELECT value FROM {variable} WHERE name REGEXP '^location_geocode_[a-z][a-z]_google_apikey$'"
   )->fetchField();
 
-  db_delete('variable')
-    ->where("name REGEXP '^location_geocode_[a-z][a-z]_google_apikey$'")
-    ->execute();
+  // @FIXME
+// db_delete('variable')
+//     ->where("name REGEXP '^location_geocode_[a-z][a-z]_google_apikey$'")
+//     ->execute();
 
-  db_insert('variable')
-    ->fields(
-      array(
-        'name' => 'location_geocode_google_apikey',
-        'value' => $key,
-      )
-    )
-    ->execute();
+
+  // @FIXME
+// db_insert('variable')
+//     ->fields(
+//       array(
+//         'name' => 'location_geocode_google_apikey',
+//         'value' => $key,
+//       )
+//     )
+//     ->execute();
+
 
   db_delete('cache')
     ->condition('cid', 'variables')
     ->execute();
 
-  variable_set('location_general_geocoders_in_use', $general_geocoders_in_use);
+  \Drupal::config('location.settings')->set('location_general_geocoders_in_use', $general_geocoders_in_use)->save();
 }
 
 /**
@@ -687,7 +721,7 @@ function location_update_5301() {
 
   // General cleanup.
   // Removed in favor of permission check.
-  variable_del('location_user');
+  \Drupal::config('location.settings')->clear('location_user')->save();
 
   // Variable consolidation (as part of the element based system)
   // We're doing this "raw" so we can be sure we got everything moved over,
@@ -731,10 +765,20 @@ function location_update_5301() {
       // Initialize additional to match street.
       $value['additional'] = $value['street'];
     }
-    variable_set('location_fields_' . $type, $value);
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_set('location_fields_' . $type, $value);
+
   }
   foreach ($todelete as $key) {
-    variable_del($key);
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del($key);
+
   }
 
   // This update was retrofitted on Aug 18, 2008. Set a flag for use by
@@ -746,7 +790,7 @@ function location_update_5301() {
   // that had been deleted in the past.
   // B) Any locations with the 'type' field set to something other than 'node'
   // or 'user' did not get entries in {location_instance}.
-  variable_set('location_update_5301_retrofit', TRUE);
+  \Drupal::config('location.settings')->set('location_update_5301_retrofit', TRUE)->save();
 }
 
 /**
@@ -759,7 +803,7 @@ function location_update_5302() {
   // This was needed to fix the pre location 3.x todo item regarding keeping non
   // user, non node data intact. People doing an update after Aug 18 will already
   // have the genid column in place, so it can be safely skipped.
-  if (!variable_get('location_update_5301_retrofit', FALSE)) {
+  if (!\Drupal::config('location.settings')->get('location_update_5301_retrofit')) {
     db_add_field(
       'location_instance',
       'genid',
@@ -786,17 +830,52 @@ function location_update_5303() {
   $result = db_query("SELECT name FROM {variable} WHERE name LIKE 'location_display_teaser_%'");
   foreach ($result as $row) {
     $type = substr($row->name, 24);
-    $types[$type]['teaser'] = variable_get('location_display_teaser_' . $type, TRUE);
-    $types[$type]['full'] = variable_get('location_display_full_' . $type, TRUE);
-    $types[$type]['weight'] = variable_get('location_display_weight_' . $type, 0);
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $types[$type]['teaser'] = variable_get('location_display_teaser_' . $type, TRUE);
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $types[$type]['full'] = variable_get('location_display_full_' . $type, TRUE);
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $types[$type]['weight'] = variable_get('location_display_weight_' . $type, 0);
+
     // @@@ Combine location_suppress_country and country require settings to set this up?
     $types[$type]['hide'] = array();
   }
   foreach ($types as $type => $value) {
-    variable_set("location_display_$type", $value);
-    variable_del("location_display_teaser_$type");
-    variable_del("location_display_full_$type");
-    variable_del("location_display_weight_$type");
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_set("location_display_$type", $value);
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del("location_display_teaser_$type");
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del("location_display_full_$type");
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del("location_display_weight_$type");
+
   }
 }
 
@@ -1311,11 +1390,11 @@ function location_update_6302() {
  * Drupal 6 location 3.x update, part 3.
  */
 function location_update_6303() {
-  if (!variable_get('location_update_5304_done', FALSE)) {
+  if (!\Drupal::config('location.settings')->get('location_update_5304_done')) {
     // Do the same updates as 5304.
     // Delete unused variables.
-    variable_del('location_configured_countries');
-    variable_del('location_garbagecollect');
+    \Drupal::config('location.settings')->clear('location_configured_countries')->save();
+    \Drupal::config('location.settings')->clear('location_garbagecollect')->save();
 
     // Update province code for Italy/Forlì-Cesena.
     db_update('location')
@@ -1364,7 +1443,7 @@ function location_update_6303() {
         ->execute();
     }
 
-    variable_del('location_update_5304_done');
+    \Drupal::config('location.settings')->clear('location_update_5304_done')->save();
   }
 }
 
@@ -1373,8 +1452,8 @@ function location_update_6303() {
  */
 function location_update_6304() {
   // Skip this update if it was already done on the 5.x side.
-  if (variable_get('location_update_5305_done', FALSE)) {
-    variable_del('location_update_5305_done');
+  if (\Drupal::config('location.settings')->get('location_update_5305_done')) {
+    \Drupal::config('location.settings')->clear('location_update_5305_done')->save();
 
     return array();
   }
@@ -1410,10 +1489,14 @@ function location_update_6304() {
     'max' => 1,
     'add' => 3,
   );
-  $tmp['form']['weight'] = variable_get('location_user_weight', 9);
-  $tmp['form']['collapsible'] = variable_get('location_user_collapsible', TRUE);
-  $tmp['form']['collapased'] = variable_get('location_user_collapsed', TRUE);
-  $tmp['form']['fields'] = variable_get('location_user_fields', array());
+  $tmp['form']['weight'] = \Drupal::config('location.settings')->get('location_user_weight');
+  $tmp['form']['collapsible'] = \Drupal::config('location.settings')->get('location_user_collapsible');
+  $tmp['form']['collapased'] = \Drupal::config('location.settings')->get('location_user_collapsed');
+  // @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/location.settings.yml and config/schema/location.schema.yml.
+$tmp['form']['fields'] = \Drupal::config('location.settings')->get('location_user_fields');
 
   // Pull in node settings.
   $result = db_query("SELECT name FROM {variable} WHERE name LIKE 'location_maxnum_%'");
@@ -1426,43 +1509,118 @@ function location_update_6304() {
 
     // Old behavior was to have the first one be required.
     $tmp['multiple']['min'] = 1;
-    $tmp['multiple']['max'] = variable_get("location_maxnum_$type", 0);
-    $tmp['multiple']['add'] = variable_get("location_defaultnum_$type", 3);
-    $tmp['form']['weight'] = variable_get("location_weight_$type", 9);
-    $tmp['form']['collapsible'] = variable_get("location_collapsible_$type", TRUE);
-    $tmp['form']['collapsed'] = variable_get("location_collapsed_$type", TRUE);
-    $tmp['form']['fields'] = variable_get("location_fields_$type", array());
-    $tmp['rss']['mode'] = variable_get("location_rss_$type", 'simple');
-    $tmp['display'] = variable_get(
-      "location_display_$type",
-      array(
-        'teaser' => TRUE,
-        'full' => TRUE,
-        'weight' => 0,
-        'hide' => array(),
-      )
-    );
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $tmp['multiple']['max'] = variable_get("location_maxnum_$type", 0);
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $tmp['multiple']['add'] = variable_get("location_defaultnum_$type", 3);
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $tmp['form']['weight'] = variable_get("location_weight_$type", 9);
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $tmp['form']['collapsible'] = variable_get("location_collapsible_$type", TRUE);
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $tmp['form']['collapsed'] = variable_get("location_collapsed_$type", TRUE);
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $tmp['form']['fields'] = variable_get("location_fields_$type", array());
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $tmp['rss']['mode'] = variable_get("location_rss_$type", 'simple');
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $tmp['display'] = variable_get(
+//       "location_display_$type",
+//       array(
+//         'teaser' => TRUE,
+//         'full' => TRUE,
+//         'weight' => 0,
+//         'hide' => array(),
+//       )
+//     );
+
   }
 
   foreach ($variables as $name => $value) {
-    variable_set($name, $value);
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_set($name, $value);
+
   }
 
   // Delete old node variables.
   foreach ($todelete as $key) {
-    variable_del("location_weight_$key");
-    variable_del("location_collapsible_$key");
-    variable_del("location_collapsed_$key");
-    variable_del("location_fields_$key");
-    variable_del("location_rss_$key");
-    variable_del("location_display_$key");
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del("location_weight_$key");
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del("location_collapsible_$key");
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del("location_collapsed_$key");
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del("location_fields_$key");
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del("location_rss_$key");
+
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del("location_display_$key");
+
   }
 
   // Delete old user variables.
-  variable_del('location_user_weight');
-  variable_del('location_user_collapsible');
-  variable_del('location_user_collapsed');
-  variable_del('location_user_fields');
+  \Drupal::config('location.settings')->clear('location_user_weight')->save();
+  \Drupal::config('location.settings')->clear('location_user_collapsible')->save();
+  \Drupal::config('location.settings')->clear('location_user_collapsed')->save();
+  \Drupal::config('location.settings')->clear('location_user_fields')->save();
 }
 
 /**
@@ -1477,15 +1635,20 @@ function location_update_6305() {
  */
 function location_update_6306() {
   // Skip this update if it was already done on the 5.x side.
-  if (variable_get('location_update_5306_done', FALSE)) {
-    variable_del('location_update_5306_done');
+  if (\Drupal::config('location.settings')->get('location_update_5306_done')) {
+    \Drupal::config('location.settings')->clear('location_update_5306_done')->save();
 
     return array();
   }
 
   $result = db_query("SELECT name FROM {variable} WHERE name LIKE 'location_settings_%'");
   foreach ($result as $row) {
-    $var = variable_get($row->name, array());
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $var = variable_get($row->name, array());
+
     $collect = $var['form']['fields'];
     $var['form']['fields'] = array();
     foreach ($collect as $k => $v) {
@@ -1496,7 +1659,12 @@ function location_update_6306() {
       $var['form']['fields']['country']['collect'] = 4;
     }
     // Weight and default values don't need to get set for now.
-    variable_set($row->name, $var);
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_set($row->name, $var);
+
   }
 }
 
@@ -1506,10 +1674,10 @@ function location_update_6306() {
 function location_update_6307() {
   $message = t(
     "Note: Location module has now split off user location support into a separate module, called <em>User Locations</em>. It has been enabled for you. If you don't want user locations, visit the <a href='!url'>modules page</a> and disable it.",
-    array('!url' => url('admin/modules'))
+    array('!url' => \Drupal\Core\Url::fromRoute('system.modules_list'))
   );
 
-  if (module_exists('location')) {
+  if (\Drupal::moduleHandler()->moduleExists('location')) {
     module_enable(array('location_user'));
   }
   else {
@@ -1527,10 +1695,10 @@ function location_update_6307() {
 function location_update_6308() {
   $message = t(
     "Note: Location module has now split off node location support into a separate module, called <em>Node Locations</em>. It has been enabled for you. If you don't want node locations, visit the <a href='!url'>modules page</a> and disable it.",
-    array('!url' => url('admin/modules'))
+    array('!url' => \Drupal\Core\Url::fromRoute('system.modules_list'))
   );
 
-  if (module_exists('location')) {
+  if (\Drupal::moduleHandler()->moduleExists('location')) {
     module_enable(array('location_node'));
   }
   else {
@@ -1550,7 +1718,7 @@ function location_update_6308() {
 function location_update_6309() {
   $updated_views = array();
 
-  if (module_exists('views')) {
+  if (\Drupal::moduleHandler()->moduleExists('views')) {
     $views = views_get_all_views();
     foreach ($views as $view) {
       $modified = FALSE;
@@ -1624,18 +1792,18 @@ function location_update_7301() {
     ->condition('country', 'uk')
     ->execute();
 
-  $uk = variable_get('location_geocode_uk', '');
-  $gb = variable_get('location_geocode_gb', '');
+  $uk = \Drupal::config('location.settings')->get('location_geocode_uk');
+  $gb = \Drupal::config('location.settings')->get('location_geocode_gb');
 
   if ($uk) {
-    variable_set('location_geocode_gb', $uk);
+    \Drupal::config('location.settings')->set('location_geocode_gb', $uk)->save();
   }
 
-  $uk = variable_get('location_map_link_uk', '');
-  $gb = variable_get('location_map_link_gb', '');
+  $uk = \Drupal::config('location.settings')->get('location_map_link_uk');
+  $gb = \Drupal::config('location.settings')->get('location_map_link_gb');
 
   if ($uk) {
-    variable_set('location_map_link_gb', $uk);
+    \Drupal::config('location.settings')->set('location_map_link_gb', $uk)->save();
   }
 
   cache_clear_all('*', 'cache_location', TRUE);

@@ -307,7 +307,7 @@ function location_geocode_us_yahoo_settings() {
     '#title' => t('Yahoo! Web Services Application ID'),
     '#size' => 64,
     '#maxlength' => 128,
-    '#default_value' => variable_get('location_geocode_us_yahoo_appid', 'YahooDemo'),
+    '#default_value' => \Drupal::config('location.settings')->get('location_geocode_us_yahoo_appid'),
     '#description' => t(
       'Unless you are using this site to test and develop, you will need to obtain a Yahoo! Web Services Application ID from the %network_link.  If you are using for development and testing purposes, you can use \'YahooDemo\' as your AppID.  When getting an Application ID from Yahoo!, be sure to review the %usage_policy.',
       array(
@@ -324,14 +324,19 @@ function location_geocode_us_yahoo_settings() {
  * Geocode by Yahoo.
  */
 function location_geocode_us_yahoo($location = array()) {
-  $service_url = "http://api.local.yahoo.com/MapsService/V1/geocode?appid=" . variable_get(
-      'location_geocode_us_yahoo_appid',
-      "YahooDemo"
-    ) . "&location=";
+  $service_url = "http://api.local.yahoo.com/MapsService/V1/geocode?appid=" . \Drupal::config('location.settings')->get('location_geocode_us_yahoo_appid') . "&location=";
 
   $address = location_address2singleline($location);
 
-  $http_reply = drupal_http_request($service_url . urlencode($address));
+  // @FIXME
+// drupal_http_request() has been replaced by the Guzzle HTTP client, which is bundled
+// with Drupal core.
+// 
+// 
+// @see https://www.drupal.org/node/1862446
+// @see http://docs.guzzlephp.org/en/latest
+// $http_reply = drupal_http_request($service_url . urlencode($address));
+
 
   // Address may have been improperly formatted or invalid.
   if ($http_reply->code == 400) {

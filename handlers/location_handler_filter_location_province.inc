@@ -58,7 +58,15 @@ class location_handler_filter_location_province extends views_handler_filter {
       $ac = implode(',', $ac);
     }
     if ($this->options['type'] == 'textfield') {
-      drupal_add_js(drupal_get_path('module', 'location') . '/location_autocomplete.js');
+      // @FIXME
+// CSS, JavaScript, and libraries are now attached directly to render arrays
+// using the #attached property. drupal_add_js() is internal and should never be
+// called directly.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// drupal_add_js(drupal_get_path('module', 'location') . '/location_autocomplete.js');
+
 
       $form['value'] = array(
         '#type' => 'textfield',
@@ -114,7 +122,7 @@ class location_handler_filter_location_province extends views_handler_filter {
    * Grovel country.
    */
   public function grovel_country() {
-    $country = variable_get('location_default_country', 'us');
+    $country = \Drupal::config('location.settings')->get('location_default_country');
     if (!empty($this->view->filter)) {
       foreach ($this->view->filter as $k => $v) {
         if ($v->table == 'location' && $v->options['relationship'] == $this->options['relationship']) {
@@ -133,7 +141,7 @@ class location_handler_filter_location_province extends views_handler_filter {
 
     if ($country == '' || $country == 'All' || $country == '  ' || $country == 'xx') {
       // It's set to something nonsensical, reset to the default to prevent malfunctions.
-      $country = variable_get('location_default_country', 'us');
+      $country = \Drupal::config('location.settings')->get('location_default_country');
     }
     $this->location_country = $country;
 

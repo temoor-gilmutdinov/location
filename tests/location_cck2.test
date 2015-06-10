@@ -43,7 +43,7 @@ class LocationCCK2Test extends LocationTestCase {
 
   public function setUp() {
     parent::setUp('location', 'location_cck', 'field_ui');
-    $this->admin_user = $this->drupalCreateUser(array_keys(module_invoke_all('permission')));
+    $this->admin_user = $this->drupalCreateUser(array_keys(\Drupal::moduleHandler()->invokeAll('permission')));
     $this->normal_user = $this->drupalCreateUser(array('access content'));
     $this->drupalLogin($this->admin_user);
   }

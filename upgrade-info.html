@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,700,600' rel='stylesheet' type='text/css' />
+    <style type="text/css">
+    <!--
+
+body {
+  width: 80%;
+  color: #343434;
+  margin: 1em auto;
+  font-family: 'Open Sans', Verdana, sans-serif;
+}
+
+details {
+  font-size: 18px;
+  line-height: 25px;
+  margin-bottom: 2em;
+}
+
+details summary {
+  padding: 1em;
+  margin-bottom: 1em;
+}
+
+details.error summary {
+  background-color: #ffd5d5;
+}
+
+details.warning summary {
+  background-color: #fff3bb;
+}
+
+a {
+  color: #095cb1;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+h5 {
+  font-size: 1em;
+}
+
+aside {
+  font-style: italic;
+  line-height: 20px;
+  font-size: 15px;
+}
+
+.group {
+  border: 1px solid #ececec;
+  padding: 1em;
+}
+
+.group > summary {
+  padding: 0;
+  color: #c8c8c8;
+  margin-bottom: 0;;
+  font-weight: bold;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.group[open] > summary {
+  margin-bottom: 1em;
+}
+
+.group > details:last-child {
+  margin-bottom: 0;
+}
+
+    -->
+    </style>
+  </head>
+  <body>
+      <details open="true" class="group">
+      <summary>CTools</summary>
+          <details class="error">
+      <summary>Most CTools APIs have moved into core.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2164623">Many common dependencies added to core</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/plugins/relationships/location_from_node.inc, line 104</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:ctools_include</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Caching</summary>
+          <details class="error">
+      <summary>The caching system has been rewritten.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1884796">Drupal 8 Cache API</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/1272696">New cache API</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 15</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 432</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 440</li>
+              <li>/var/www/drupal/modules/location/location.install, line 28</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1641</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:cache_clear_all</aside>    </details>
+    <details class="error">
+      <summary>The caching system has been rewritten.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1884796">Drupal 8 Cache API</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/1272696">New cache API</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.inc, line 553</li>
+              <li>/var/www/drupal/modules/location/location.inc, line 582</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:cache_get</aside>    </details>
+    <details class="error">
+      <summary>The caching system has been rewritten.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1884796">Drupal 8 Cache API</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/1272696">New cache API</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.inc, line 565</li>
+              <li>/var/www/drupal/modules/location/location.inc, line 590</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:cache_set</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Configuration</summary>
+          <details class="error">
+      <summary><code>variable_del()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2183531">The Variable API has been removed</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.install, line 13</li>
+              <li>/var/www/drupal/modules/location/location.install, line 14</li>
+              <li>/var/www/drupal/modules/location/location.install, line 15</li>
+              <li>/var/www/drupal/modules/location/location.install, line 16</li>
+              <li>/var/www/drupal/modules/location/location.install, line 443</li>
+              <li>/var/www/drupal/modules/location/location.install, line 690</li>
+              <li>/var/www/drupal/modules/location/location.install, line 737</li>
+              <li>/var/www/drupal/modules/location/location.install, line 797</li>
+              <li>/var/www/drupal/modules/location/location.install, line 798</li>
+              <li>/var/www/drupal/modules/location/location.install, line 799</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1317</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1318</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1367</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1377</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1453</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1454</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1455</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1456</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1457</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1458</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1462</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1463</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1464</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1465</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1481</li>
+              <li>/var/www/drupal/modules/location/location_node.install, line 15</li>
+              <li>/var/www/drupal/modules/location/location_node.install, line 21</li>
+              <li>/var/www/drupal/modules/location/location_node.install, line 25</li>
+              <li>/var/www/drupal/modules/location/location_user.install, line 13</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:variable_del</aside>    </details>
+    <details class="error">
+      <summary><code>variable_get()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2183531">The Variable API has been removed</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/supported/location.au.inc, line 287</li>
+              <li>/var/www/drupal/modules/location/supported/location.au.inc, line 304</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 26</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 35</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 48</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 58</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 74</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 83</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 96</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 106</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 146</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 193</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 256</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 267</li>
+              <li>/var/www/drupal/modules/location/handlers/location_handler_filter_location_province.inc, line 117</li>
+              <li>/var/www/drupal/modules/location/handlers/location_handler_filter_location_province.inc, line 136</li>
+              <li>/var/www/drupal/modules/location/location_node.module, line 16</li>
+              <li>/var/www/drupal/modules/location/location_node.module, line 93</li>
+              <li>/var/www/drupal/modules/location/location_node.module, line 111</li>
+              <li>/var/www/drupal/modules/location/location_node.module, line 158</li>
+              <li>/var/www/drupal/modules/location/location_node.module, line 274</li>
+              <li>/var/www/drupal/modules/location/location_node.module, line 293</li>
+              <li>/var/www/drupal/modules/location/location_node.module, line 316</li>
+              <li>/var/www/drupal/modules/location/location.install, line 335</li>
+              <li>/var/www/drupal/modules/location/location.install, line 442</li>
+              <li>/var/www/drupal/modules/location/location.install, line 762</li>
+              <li>/var/www/drupal/modules/location/location.install, line 789</li>
+              <li>/var/www/drupal/modules/location/location.install, line 790</li>
+              <li>/var/www/drupal/modules/location/location.install, line 791</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1314</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1376</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1413</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1414</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1415</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1416</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1429</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1430</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1431</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1432</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1433</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1434</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1435</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1436</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1480</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1488</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1627</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1628</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1634</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1635</li>
+              <li>/var/www/drupal/modules/location/location.views.inc, line 521</li>
+              <li>/var/www/drupal/modules/location/location.inc, line 60</li>
+              <li>/var/www/drupal/modules/location/location.inc, line 72</li>
+              <li>/var/www/drupal/modules/location/location.inc, line 72</li>
+              <li>/var/www/drupal/modules/location/location.inc, line 505</li>
+              <li>/var/www/drupal/modules/location/supported/location.us.inc, line 310</li>
+              <li>/var/www/drupal/modules/location/supported/location.us.inc, line 327</li>
+              <li>/var/www/drupal/modules/location/location.module, line 442</li>
+              <li>/var/www/drupal/modules/location/location.module, line 444</li>
+              <li>/var/www/drupal/modules/location/location.module, line 740</li>
+              <li>/var/www/drupal/modules/location/location.module, line 864</li>
+              <li>/var/www/drupal/modules/location/location.module, line 1182</li>
+              <li>/var/www/drupal/modules/location/location.module, line 1940</li>
+              <li>/var/www/drupal/modules/location/handlers/location_handler_argument_location_proximity.inc, line 20</li>
+              <li>/var/www/drupal/modules/location/handlers/location_handler_argument_location_proximity.inc, line 87</li>
+              <li>/var/www/drupal/modules/location/location_user.module, line 38</li>
+              <li>/var/www/drupal/modules/location/location_user.module, line 106</li>
+              <li>/var/www/drupal/modules/location/location_user.module, line 107</li>
+              <li>/var/www/drupal/modules/location/location_user.module, line 127</li>
+              <li>/var/www/drupal/modules/location/location_user.module, line 139</li>
+              <li>/var/www/drupal/modules/location/geocoding/google.inc, line 43</li>
+              <li>/var/www/drupal/modules/location/geocoding/google.inc, line 79</li>
+              <li>/var/www/drupal/modules/location/geocoding/google.inc, line 128</li>
+              <li>/var/www/drupal/modules/location/geocoding/google.inc, line 144</li>
+              <li>/var/www/drupal/modules/location/geocoding/google.inc, line 153</li>
+              <li>/var/www/drupal/modules/location/geocoding/google.inc, line 155</li>
+              <li>/var/www/drupal/modules/location/supported/location.nz.inc, line 389</li>
+              <li>/var/www/drupal/modules/location/supported/location.nz.inc, line 406</li>
+              <li>/var/www/drupal/modules/location/supported/location.ca.inc, line 407</li>
+              <li>/var/www/drupal/modules/location/supported/location.ca.inc, line 430</li>
+              <li>/var/www/drupal/modules/location/supported/location.ca.inc, line 431</li>
+              <li>/var/www/drupal/modules/location/tests/location_testcase.test, line 109</li>
+              <li>/var/www/drupal/modules/location/handlers/location_handler_argument_location_province.inc, line 71</li>
+              <li>/var/www/drupal/modules/location/handlers/location_handler_argument_location_province.inc, line 95</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:variable_get</aside>    </details>
+    <details class="error">
+      <summary><code>variable_set()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2183531">The Variable API has been removed</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 319</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 324</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 328</li>
+              <li>/var/www/drupal/modules/location/location_node.module, line 244</li>
+              <li>/var/www/drupal/modules/location/location_node.module, line 248</li>
+              <li>/var/www/drupal/modules/location/location_node.module, line 252</li>
+              <li>/var/www/drupal/modules/location/location_node.module, line 298</li>
+              <li>/var/www/drupal/modules/location/location.install, line 338</li>
+              <li>/var/www/drupal/modules/location/location.install, line 444</li>
+              <li>/var/www/drupal/modules/location/location.install, line 445</li>
+              <li>/var/www/drupal/modules/location/location.install, line 525</li>
+              <li>/var/www/drupal/modules/location/location.install, line 734</li>
+              <li>/var/www/drupal/modules/location/location.install, line 749</li>
+              <li>/var/www/drupal/modules/location/location.install, line 796</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1448</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1499</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1631</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1638</li>
+              <li>/var/www/drupal/modules/location/tests/google_geocoder.test, line 26</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:variable_set</aside>    </details>
+    <details class="warning">
+      <summary>Default configuration is deleted automatically.</summary>
+
+      
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.install, line 13</li>
+              <li>/var/www/drupal/modules/location/location.install, line 14</li>
+              <li>/var/www/drupal/modules/location/location.install, line 15</li>
+              <li>/var/www/drupal/modules/location/location.install, line 16</li>
+            </ul>
+      
+      <aside>Flagged by hook_uninstall</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Database</summary>
+          <details class="error">
+      <summary>Certain database tables have been removed.</summary>
+
+      
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.install, line 512</li>
+            </ul>
+      
+      <aside>Flagged by _db:db_insert</aside>    </details>
+    <details class="error">
+      <summary>Certain database tables have been removed.</summary>
+
+      
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.install, line 490</li>
+            </ul>
+      
+      <aside>Flagged by _db:db_update</aside>    </details>
+    <details class="error">
+      <summary><code>drupal_write_record()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2340291"><code>drupal_write_record()</code> removed</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.module, line 1539</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:drupal_write_record</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Entity API</summary>
+          <details class="error">
+      <summary><code>node_load()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2266845">Entities are now classed objects implementing <code>EntityInterface</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location_node.module, line 136</li>
+              <li>/var/www/drupal/modules/location/location.views.inc, line 546</li>
+              <li>/var/www/drupal/modules/location/tests/google_geocoder.test, line 62</li>
+              <li>/var/www/drupal/modules/location/tests/cow.test, line 63</li>
+              <li>/var/www/drupal/modules/location/tests/cow.test, line 90</li>
+              <li>/var/www/drupal/modules/location/tests/cow.test, line 124</li>
+              <li>/var/www/drupal/modules/location/tests/cow.test, line 165</li>
+              <li>/var/www/drupal/modules/location/tests/cow.test, line 180</li>
+              <li>/var/www/drupal/modules/location/tests/cow.test, line 188</li>
+              <li>/var/www/drupal/modules/location/tests/cow.test, line 235</li>
+              <li>/var/www/drupal/modules/location/tests/cow.test, line 255</li>
+              <li>/var/www/drupal/modules/location/tests/cow.test, line 256</li>
+              <li>/var/www/drupal/modules/location/tests/cow.test, line 308</li>
+              <li>/var/www/drupal/modules/location/tests/cow.test, line 322</li>
+              <li>/var/www/drupal/modules/location/tests/location_testcase.test, line 172</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:node_load</aside>    </details>
+    <details class="error">
+      <summary><code>node_delete()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2266845">Entities are now classed objects implementing <code>EntityInterface</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/tests/location_testcase.test, line 118</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:node_delete</aside>    </details>
+    <details class="error">
+      <summary><code>user_load()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2266845">Entities are now classed objects implementing <code>EntityInterface</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.views.inc, line 574</li>
+              <li>/var/www/drupal/modules/location/location_user.module, line 153</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:user_load</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Field API</summary>
+          <details class="error">
+      <summary>The Field API CRUD functions have been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2012896">Fields and field instances are now entities</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.views.inc, line 400</li>
+              <li>/var/www/drupal/modules/location/plugins/relationships/location_from_node.inc, line 129</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:field_info_fields</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Form API</summary>
+          <details class="error">
+      <summary><code>drupal_map_assoc()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2207453"><code>drupal_map_assoc()</code> removed</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.module, line 2005</li>
+              <li>/var/www/drupal/modules/location/location.module, line 2012</li>
+              <li>/var/www/drupal/modules/location/location.module, line 2020</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:drupal_map_assoc</aside>    </details>
+    <details class="error">
+      <summary><code>drupal_get_form()</code> has moved into the FormBuilder service.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2121003">Form generation functions moved into FormBuilder service</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.module, line 1019</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:drupal_get_form</aside>    </details>
+    <details class="error">
+      <summary><code>form_error()</code> is now a method of <code>FormStateInterface</code>.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2121003">Form functions moved into <code>FormStateInterface</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location_node.module, line 221</li>
+              <li>/var/www/drupal/modules/location/location_node.module, line 230</li>
+              <li>/var/www/drupal/modules/location/location.module, line 764</li>
+              <li>/var/www/drupal/modules/location/location.module, line 781</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:form_error</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Info File</summary>
+          <details class="error">
+      <summary>Module info files' <code>core</code> key must have a value of <code>8.x</code>.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1935708"><code>.info</code> files are now <code>.info.yml</code> files</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.info</li>
+            </ul>
+      
+      <aside>Flagged by info</aside>    </details>
+    <details class="error">
+      <summary>Info files must contain a <code>type</code> key.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1935708#type"><code>.info</code> files are now <code>.info.yml</code> files</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.info</li>
+            </ul>
+      
+      <aside>Flagged by info</aside>    </details>
+    <details class="error">
+      <summary>Modules no longer declare classes in their info file.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1935708#files"><code>.info</code> files are now <code>.info.yml</code> files</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.info</li>
+            </ul>
+      
+      <aside>Flagged by info</aside>    </details>
+    <details class="error">
+      <summary>Module info files' <code>configure</code> key must be a route name, not a path.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1935708#configure"><code>.info</code> files are now <code>.info.yml</code> files</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.info</li>
+            </ul>
+      
+      <aside>Flagged by info</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Menu/Routing</summary>
+          <details class="error">
+      <summary><code>hook_menu()</code> has been removed from Drupal 8.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1800686">All functionality of <code>hook_menu()</code> replaced</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2177901">Dynamic routes are now defined in <code>MODULE.routing.yml</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2119699">Page callbacks have been converted to controller classes</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2089605">Route naming convention</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2165243">Contextual links are now plugins defined in <code>MODULE.links.contextual.yml</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2007444">Local actions are now plugins defined in <code>MODULE.links.action.yml</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2044515">Local tasks and now plugins defined in <code>MODULE.links.task.yml</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2228089">Menu links are now defined in <code>MODULE.links.menu.yml</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.module, line 24</li>
+            </ul>
+      
+      <aside>Flagged by _flag_hook:menu</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Miscellaneous</summary>
+          <details class="warning">
+      <summary>Many common functions, shared variables, and constants have been renamed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2324935">The global theme variables have been replaced by an ActiveTheme object</a></li>
+              </ul>
+      
+      
+          </details>
+    <details class="error">
+      <summary>Classes must be PSR-4 compliant.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2246699">PSR-4 compatible class loader in Drupal core</a></li>
+              </ul>
+      
+      
+          </details>
+    <details class="error">
+      <summary>Automated web tests must be in a PSR-4 namespace, and unit tests must be converted to PHPUnit.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1543796">Namespacing of automated tests has changed</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2301125"><code>getInfo()</code> in test classes replaced by doc comments</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/1710766">Test classes should define a <code>$modules</code> property declaring dependencies</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/1911318">SimpleTest tests now use empty &quot;testing&quot; profile by default</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/1829160">New <code>KernelTestBase</code> class for API-level integration tests</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2012184">PHPUnit added to Drupal core</a></li>
+              </ul>
+      
+      
+          </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Rendering</summary>
+          <details class="error">
+      <summary><code>drupal_add_css()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2169605"><code>drupal_add_css()</code> removed</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.module, line 283</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:drupal_add_css</aside>    </details>
+    <details class="error">
+      <summary><code>drupal_add_js()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2169605"><code>drupal_add_js()</code> removed</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/handlers/location_handler_filter_location_province.inc, line 61</li>
+              <li>/var/www/drupal/modules/location/location.module, line 894</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:drupal_add_js</aside>    </details>
+    <details class="error">
+      <summary><code>drupal_add_tabledrag()</code> is now the <code>#tabledrag</code> property of a render array.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2160571"><code>drupal_add_tabledrag()</code> replaced by render array attachment</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.module, line 647</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:drupal_add_tabledrag</aside>    </details>
+    <details class="error">
+      <summary><code>element_children()</code> is now a method of the <code>Element</code> class.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2173683"><code>element_*</code> functions moved into <code>Element</code> class</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 342</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 371</li>
+              <li>/var/www/drupal/modules/location/handlers/location_views_handler_filter_proximity.inc, line 286</li>
+              <li>/var/www/drupal/modules/location/location.module, line 624</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:element_children</aside>    </details>
+    <details class="error">
+      <summary><code>format_plural()</code> was moved into the translation service.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2173787"><code>format_plural()</code> moved to translation service</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.module, line 2113</li>
+              <li>/var/www/drupal/modules/location/locations.tpl.php, line 10</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:format_plural</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>System</summary>
+          <details class="error">
+      <summary><code>drupal_http_request()</code> has been replaced by Guzzle.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1862446">Guzzle HTTP client in Drupal core</a></li>
+                <li><a target="_blank" href="http://docs.guzzlephp.org/en/latest">Guzzle documentation</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/supported/location.au.inc, line 311</li>
+              <li>/var/www/drupal/modules/location/supported/location.us.inc, line 334</li>
+              <li>/var/www/drupal/modules/location/geocoding/google.inc, line 95</li>
+              <li>/var/www/drupal/modules/location/supported/location.nz.inc, line 413</li>
+              <li>/var/www/drupal/modules/location/supported/location.ca.inc, line 441</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:drupal_http_request</aside>    </details>
+    <details class="error">
+      <summary><code>drupal_set_title()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2067859"><code>drupal_set_title()</code> removed</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.module, line 1006</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:drupal_set_title</aside>    </details>
+    <details class="error">
+      <summary><code>l()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2346779"><code>l()</code> replaced by URL generation API</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.module, line 1009</li>
+              <li>/var/www/drupal/modules/location/location.module, line 1010</li>
+              <li>/var/www/drupal/modules/location/location.module, line 1012</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:l</aside>    </details>
+    <details class="error">
+      <summary><code>module_invoke_all()</code> is now a method of the <code>module_handler</code> service.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1894902"><code>module_invoke_all()</code> replaced by <code>module_handler</code> service</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/tests/google_geocoder.test, line 27</li>
+              <li>/var/www/drupal/modules/location/tests/cow.test, line 40</li>
+              <li>/var/www/drupal/modules/location/tests/location_cck.test, line 39</li>
+              <li>/var/www/drupal/modules/location/tests/location_cck2.test, line 46</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:module_invoke_all</aside>    </details>
+    <details class="error">
+      <summary><code>url()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2346779"><code>url()</code> replaced by URL generation API</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 62</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 64</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1509</li>
+              <li>/var/www/drupal/modules/location/location.install, line 1530</li>
+              <li>/var/www/drupal/modules/location/location.module, line 134</li>
+              <li>/var/www/drupal/modules/location/location.module, line 135</li>
+              <li>/var/www/drupal/modules/location/geocoding/google.inc, line 87</li>
+              <li>/var/www/drupal/modules/location/supported/location.dk.inc, line 47</li>
+              <li>/var/www/drupal/modules/location/supported/location.dk.inc, line 52</li>
+              <li>/var/www/drupal/modules/location/supported/location.dk.inc, line 55</li>
+              <li>/var/www/drupal/modules/location/supported/location.dk.inc, line 100</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:url</aside>    </details>
+    <details class="error">
+      <summary><code>user_access()</code> is now <code>AccountInterface::hasPermission()</code>.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2049309"><code>user_access()</code> got converted to a method on the user/account interface</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.module, line 376</li>
+              <li>/var/www/drupal/modules/location/location_user.module, line 102</li>
+              <li>/var/www/drupal/modules/location/location_user.module, line 102</li>
+              <li>/var/www/drupal/modules/location/location_user.module, line 104</li>
+              <li>/var/www/drupal/modules/location/location_user.module, line 104</li>
+              <li>/var/www/drupal/modules/location/location_user.module, line 123</li>
+              <li>/var/www/drupal/modules/location/location_user.module, line 123</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:user_access</aside>    </details>
+    <details class="error">
+      <summary><code>watchdog()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2270941"><code>watchdog()</code> is deprecated</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.inc, line 752</li>
+              <li>/var/www/drupal/modules/location/location.module, line 1145</li>
+              <li>/var/www/drupal/modules/location/location.module, line 1511</li>
+              <li>/var/www/drupal/modules/location/geocoding/google.inc, line 101</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:watchdog</aside>    </details>
+    <details class="warning">
+      <summary>Static permissions are now defined in <code>MODULE.permissions.yml</code>.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2311427">Defining permissions in <code>MODULE.permissions.yml</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.module, line 92</li>
+            </ul>
+      
+      <aside>Flagged by hook_permission</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Theme System</summary>
+          <details class="error">
+      <summary><code>theme()</code> has been renamed to <code>_theme()</code>, and should never be called directly.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2195739"><code>theme()</code> renamed to <code>_theme()</code> and should not be called directly</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 352</li>
+              <li>/var/www/drupal/modules/location/location.admin.inc, line 384</li>
+              <li>/var/www/drupal/modules/location/location.module, line 208</li>
+              <li>/var/www/drupal/modules/location/location.module, line 649</li>
+              <li>/var/www/drupal/modules/location/location.module, line 1917</li>
+              <li>/var/www/drupal/modules/location/location.module, line 1924</li>
+              <li>/var/www/drupal/modules/location/location.module, line 1978</li>
+              <li>/var/www/drupal/modules/location/handlers/location_handler_field_location_address.inc, line 57</li>
+              <li>/var/www/drupal/modules/location/handlers/location_handler_field_location_distance.inc, line 185</li>
+              <li>/var/www/drupal/modules/location/handlers/location_handler_field_location_distance.inc, line 190</li>
+              <li>/var/www/drupal/modules/location/handlers/location_views_handler_field_coordinates.inc, line 23</li>
+              <li>/var/www/drupal/modules/location/handlers/location_views_handler_field_coordinates.inc, line 23</li>
+              <li>/var/www/drupal/modules/location/handlers/location_views_handler_field_latitude.inc, line 45</li>
+              <li>/var/www/drupal/modules/location/handlers/location_views_handler_field_longitude.inc, line 16</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:theme</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Utilities</summary>
+          <details class="error">
+      <summary><code>drupal_strtolower()</code> has been moved into the Unicode utility class.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1992584"><code>drupal_strtolower()</code> moved into Unicode component</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal/modules/location/handlers/location_handler_argument_location_proximity.inc, line 128</li>
+            </ul>
+      
+      <aside>Flagged by _function_call:drupal_strtolower</aside>    </details>
+
+    </details>
+    </body>
+</html>

@@ -396,8 +396,15 @@ function location_views_data() {
 function location_views_proximity_get_location_field_options() {
   // Get the CCK location field options.
   $field_options = array('node' => t('Node location'));
-  if (module_exists('location_cck')) {
-    $fields = field_info_fields();
+  if (\Drupal::moduleHandler()->moduleExists('location_cck')) {
+    // @FIXME
+// Fields and field instances are now exportable configuration entities, and
+// the Field Info API has been removed.
+// 
+// 
+// @see https://www.drupal.org/node/2012896
+// $fields = field_info_fields();
+
     foreach ($fields as $field) {
       if ($field['module'] == 'location_cck') {
         $field_options[$field['field_name']] = t('CCK Location: @name', array('@name' => $field['field_name']));
@@ -463,7 +470,7 @@ function location_views_proximity_get_reference_location($view, $options) {
   switch ($options['origin']) {
     case 'user':
     case 'hybrid':
-      global $user;
+      $user = \Drupal::currentUser();
       $user_locations = isset($user->locations) ? $user->locations : location_load_locations($user->uid, 'uid');
       // This user_location_delta will only possibly be set if we are dealing with the filter.
       $i = (isset($options['user_location_delta']) && !empty($options['user_location_delta'])) ? $options['user_location_delta'] : 0;
@@ -518,7 +525,7 @@ function location_views_proximity_get_reference_location($view, $options) {
     case 'postal_default':
       // Force default for country.
       if ($options['origin'] == 'postal_default') {
-        $options['country'] = variable_get('location_default_country', 'us');
+        $options['country'] = \Drupal::config('location.settings')->get('location_default_country');
       }
       // Zip code lookup.
       if (!empty($options['postal_code']) && !empty($options['country'])) {
@@ -543,7 +550,7 @@ function location_views_proximity_get_reference_location($view, $options) {
     case 'nid_arg':
       if ($nodehandler = $view->display_handler->get_handler('argument', $options['nid_arg'])) {
         $nid = $nodehandler->get_value(NULL);
-        if ($nid && is_numeric($nid) && $tempnode = node_load($nid)) {
+        if ($nid && is_numeric($nid) && $tempnode = \Drupal::entityManager()->getStorage('node')->load($nid)) {
           $field_name = $options['nid_loc_field'];
           if ($field_name == 'node') {
             $coordinates['latitude'] = (float) $tempnode->location['latitude'];
@@ -552,9 +559,9 @@ function location_views_proximity_get_reference_location($view, $options) {
           else {
             if (isset($tempnode->$field_name)) {
               $cck_location = $tempnode->$field_name;
-              if (isset($cck_location[LANGUAGE_NONE][0]['longitude']) && isset($cck_location[LANGUAGE_NONE][0]['latitude'])) {
-                $coordinates['latitude'] = (float) $cck_location[LANGUAGE_NONE][0]['latitude'];
-                $coordinates['longitude'] = (float) $cck_location[LANGUAGE_NONE][0]['longitude'];
+              if (isset($cck_location[\Drupal\Core\Language\Language::LANGCODE_NOT_SPECIFIED][0]['longitude']) && isset($cck_location[\Drupal\Core\Language\Language::LANGCODE_NOT_SPECIFIED][0]['latitude'])) {
+                $coordinates['latitude'] = (float) $cck_location[\Drupal\Core\Language\Language::LANGCODE_NOT_SPECIFIED][0]['latitude'];
+                $coordinates['longitude'] = (float) $cck_location[\Drupal\Core\Language\Language::LANGCODE_NOT_SPECIFIED][0]['longitude'];
               }
               else {
                 if (isset($cck_location[0]['longitude']) && isset($cck_location[0]['latitude'])) {
@@ -571,7 +578,7 @@ function location_views_proximity_get_reference_location($view, $options) {
     case 'uid_arg':
       if ($userhandler = $view->display_handler->get_handler('argument', $options['uid_arg'])) {
         $uid = $userhandler->get_value();
-        if ($uid && is_numeric($uid) && $tempuser = user_load($uid)) {
+        if ($uid && is_numeric($uid) && $tempuser = \Drupal::entityManager()->getStorage('user')->load($uid)) {
           $coordinates['latitude'] = (float) $tempuser->location['latitude'];
           $coordinates['longitude'] = (float) $tempuser->location['longitude'];
         }
@@ -594,7 +601,7 @@ function location_views_proximity_get_reference_location($view, $options) {
     case 'geoip':
       $coordinates['latitude'] = (float) $options['latitude'];
       $coordinates['longitude'] = (float) $options['longitude'];
-      if (module_exists('smart_ip')) {
+      if (\Drupal::moduleHandler()->moduleExists('smart_ip')) {
         $smart_ip_session = smart_ip_session_get('smart_ip');
         if (isset($smart_ip_session['location']['latitude']) &&
           isset($smart_ip_session['location']['longitude'])
@@ -603,7 +610,7 @@ function location_views_proximity_get_reference_location($view, $options) {
           $coordinates['longitude'] = (float) $smart_ip_session['location']['longitude'];
         }
       }
-      elseif (module_exists('geoip')) {
+      elseif (\Drupal::moduleHandler()->moduleExists('geoip')) {
         // Intentional assignment of $geoip.
         if ($geoip_location = geoip_city()) {
           $coordinates['latitude'] = $geoip_location->latitude;

@@ -182,12 +182,12 @@ class location_handler_field_location_distance extends views_handler_field {
     if ($this->options['units'] == 'km') {
       $dist = $dist / 1000.0;
 
-      return theme('location_distance', array('distance' => $dist, 'units' => 'km'));
+      return _theme('location_distance', array('distance' => $dist, 'units' => 'km'));
     }
     else {
       $dist = $dist / 1609.347;
 
-      return theme('location_distance', array('distance' => $dist, 'units' => 'mi'));
+      return _theme('location_distance', array('distance' => $dist, 'units' => 'mi'));
     }
   }
 

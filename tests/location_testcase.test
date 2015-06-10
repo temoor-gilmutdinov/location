@@ -106,7 +106,12 @@ class LocationTestCase extends DrupalWebTestCase {
     $settings = array_merge($settings, $add);
     $this->drupalPost('admin/structure/types/add', $settings, 'Save content type');
     $this->refreshVariables();
-    $settings = variable_get('location_settings_node_' . $name, array());
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $settings = variable_get('location_settings_node_' . $name, array());
+
 
     return $name;
   }
@@ -115,7 +120,7 @@ class LocationTestCase extends DrupalWebTestCase {
    * Delete a node.
    */
   protected function deleteNode($nid) {
-    node_delete($nid);
+    $nid->delete();
   }
 
   /**
@@ -169,7 +174,7 @@ class LocationTestCase extends DrupalWebTestCase {
     $this->flattenPostData($edit);
     $this->drupalPost('node/add/' . str_replace('_', '-', $type), $edit, t('Save'));
 
-    $node = node_load(array('title' => $edit['title']));
+    $node = \Drupal::entityManager()->getStorage('node')->load(array('title' => $edit['title']));
     $this->assertRaw(
       t(
         '@type %title has been created.',

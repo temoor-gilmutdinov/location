@@ -37,7 +37,7 @@ class CowInstanceTest extends LocationTestCase {
 
   public function setUp() {
     parent::setUp('location', 'location_node', 'devel');
-    $web_admin = $this->drupalCreateUser(array_keys(module_invoke_all('permission')));
+    $web_admin = $this->drupalCreateUser(array_keys(\Drupal::moduleHandler()->invokeAll('permission')));
     $this->drupalLogin($web_admin);
   }
 
@@ -60,7 +60,9 @@ class CowInstanceTest extends LocationTestCase {
     );
 
     // Reload the node.
-    $node2 = node_load($node->nid, NULL, TRUE);
+    $node2 = // @FIXME
+// To reset the node cache, use EntityStorageInterface::resetCache().
+\Drupal::entityManager()->getStorage('node')->loadRevision(NULL);
 
     $this->assertEqual($location1_name, $node2->locations[0]['name'], t('Testing basic save/load'));
   }
@@ -87,7 +89,9 @@ class CowInstanceTest extends LocationTestCase {
     );
 
     // Reload the node.
-    $node2 = node_load($node->nid, NULL, TRUE);
+    $node2 = // @FIXME
+// To reset the node cache, use EntityStorageInterface::resetCache().
+\Drupal::entityManager()->getStorage('node')->loadRevision(NULL);
     $this->pass(var_export($node2->locations, TRUE));
     $this->assertEqual($node2->locations[0]['latitude'], 44.25, t('Testing coordinate-only save/load'));
   }
@@ -121,7 +125,9 @@ class CowInstanceTest extends LocationTestCase {
     );
 
     // Reload the node.
-    $node2 = node_load($node->nid, NULL, TRUE);
+    $node2 = // @FIXME
+// To reset the node cache, use EntityStorageInterface::resetCache().
+\Drupal::entityManager()->getStorage('node')->loadRevision(NULL);
 
     $this->assertEqual($location1_name, $node2->locations[0]['name'], t('Testing multi location 1/3'));
     $this->assertEqual($location2_name, $node2->locations[1]['name'], t('Testing multi location 2/3'));
@@ -162,7 +168,9 @@ class CowInstanceTest extends LocationTestCase {
     );
 
     // Reload the node.
-    $node = node_load($node->nid, NULL, TRUE);
+    $node = // @FIXME
+// To reset the node cache, use EntityStorageInterface::resetCache().
+\Drupal::entityManager()->getStorage('node')->loadRevision(NULL);
 
     // Get the full location
     $location = $node->locations[0];
@@ -177,7 +185,9 @@ class CowInstanceTest extends LocationTestCase {
     );
 
     // Reload second node.
-    $node2 = node_load($node2->nid, NULL, TRUE);
+    $node2 = // @FIXME
+// To reset the node cache, use EntityStorageInterface::resetCache().
+\Drupal::entityManager()->getStorage('node')->loadRevision(NULL);
 
     $this->assertNotEqual($node->nid, $node2->nid, t('Ensuring nodes are separate'));
     $this->assertEqual($node->locations[0]['lid'], $node2->locations[0]['lid'], t('Testing shared location'));
@@ -185,7 +195,9 @@ class CowInstanceTest extends LocationTestCase {
     $this->deleteNode($node->nid);
 
     // Force another reload.
-    $node2 = node_load($node2->nid, NULL, TRUE);
+    $node2 = // @FIXME
+// To reset the node cache, use EntityStorageInterface::resetCache().
+\Drupal::entityManager()->getStorage('node')->loadRevision(NULL);
 
     $this->assertEqual(
       $node2->locations[0]['lid'],
@@ -232,7 +244,9 @@ class CowInstanceTest extends LocationTestCase {
     );
 
     // Reload the node.
-    $node = node_load($node->nid, NULL, TRUE);
+    $node = // @FIXME
+// To reset the node cache, use EntityStorageInterface::resetCache().
+\Drupal::entityManager()->getStorage('node')->loadRevision(NULL);
 
     $changes = array(
       'revision' => TRUE,
@@ -252,8 +266,12 @@ class CowInstanceTest extends LocationTestCase {
     $this->drupalPost('node/' . $node->nid . '/edit', $changes, 'Save');
 
     // Reload the node again.
-    $node1 = node_load($node->nid, $node->vid, TRUE);
-    $node2 = node_load($node->nid, NULL, TRUE);
+    $node1 = // @FIXME
+// To reset the node cache, use EntityStorageInterface::resetCache().
+\Drupal::entityManager()->getStorage('node')->loadRevision($node->vid);
+    $node2 = // @FIXME
+// To reset the node cache, use EntityStorageInterface::resetCache().
+\Drupal::entityManager()->getStorage('node')->loadRevision(NULL);
 
     // Ensure locations are in a consistent order.
     $this->reorderLocations($node);
@@ -305,7 +323,9 @@ class CowInstanceTest extends LocationTestCase {
     );
 
     // Reload the node.
-    $node = node_load($node->nid, NULL, TRUE);
+    $node = // @FIXME
+// To reset the node cache, use EntityStorageInterface::resetCache().
+\Drupal::entityManager()->getStorage('node')->loadRevision(NULL);
 
     $changes = array(
       'locations' => array(
@@ -319,7 +339,9 @@ class CowInstanceTest extends LocationTestCase {
     $this->drupalPost('node/' . $node->nid . '/edit', $changes, 'Save');
 
     // Reload the node again.
-    $node1 = node_load($node->nid, NULL, TRUE);
+    $node1 = // @FIXME
+// To reset the node cache, use EntityStorageInterface::resetCache().
+\Drupal::entityManager()->getStorage('node')->loadRevision(NULL);
 
     // Ensure locations are in a consistent order.
     $this->reorderLocations($node);

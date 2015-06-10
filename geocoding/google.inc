@@ -40,7 +40,7 @@ function google_geocode_info() {
 function google_geocode_location($location = array()) {
 
   $delay_trigger = & drupal_static(__FUNCTION__);
-  $delay = variable_get('location_geocode_google_delay', 0);
+  $delay = \Drupal::config('location.settings')->get('location_geocode_google_delay');
   if ($delay > 0 && $delay_trigger) {
     usleep($delay * 1000);
   }
@@ -76,7 +76,7 @@ function google_geocode_location($location = array()) {
     }
   }
 
-  $key = variable_get('location_geocode_google_apikey', '');
+  $key = \Drupal::config('location.settings')->get('location_geocode_google_apikey');
   if (empty($key) && function_exists('gmap_get_key')) {
     $key = gmap_get_key();
   }
@@ -84,28 +84,26 @@ function google_geocode_location($location = array()) {
     $query['key'] = $key;
   }
 
-  $url = url(
-    'https://maps.googleapis.com/maps/api/geocode/json',
-    array(
-      'query' => $query,
-      'external' => TRUE,
-    )
-  );
+  $url = \Drupal\Core\Url::fromUri('https://maps.googleapis.com/maps/api/geocode/json');
 
-  $http_reply = drupal_http_request($url);
+  // @FIXME
+// drupal_http_request() has been replaced by the Guzzle HTTP client, which is bundled
+// with Drupal core.
+// 
+// 
+// @see https://www.drupal.org/node/1862446
+// @see http://docs.guzzlephp.org/en/latest
+// $http_reply = drupal_http_request($url);
+
   $delay_trigger = TRUE;
   $data = json_decode($http_reply->data);
 
   $status_code = $data->status;
   if ($status_code != 'OK') {
-    watchdog(
-      'location',
-      'Google geocoding returned status code: %status_code for the query url: %url',
-      array(
+    \Drupal::logger('location')->notice('Google geocoding returned status code: %status_code for the query url: %url', array(
         '%status_code' => $data->status,
         '%url' => $url,
-      )
-    );
+      ));
 
     return NULL;
   }
@@ -125,7 +123,7 @@ function google_geocode_settings() {
     '#title' => t('Google Geocoding API Server Key'),
     '#size' => 64,
     '#maxlength' => 128,
-    '#default_value' => variable_get('location_geocode_google_apikey', ''),
+    '#default_value' => \Drupal::config('location.settings')->get('location_geocode_google_apikey'),
     '#description' => t(
       'In order to use the Google Geocoding API web-service, you will need a Google Geocoding API Server Key.  You can obtain one at the !sign_up_link for the !google_maps_api.  Without a key daily requests from a single IP address will be automaticaly limited.  If you do not enter a key here this module will use the Google Maps API Key from gmap if one is present. NOTE: You will <em>not</em> have to re-enter your API key for each country for which you have selected Google Maps for geocoding.  This setting is global.',
       array(
@@ -141,22 +139,27 @@ function google_geocode_settings() {
     '#description' => t(
       'To avoid a 620 error (denial of service) from Google, you can add a delay between geocoding requests. 200ms is recommended.'
     ),
-    '#default_value' => variable_get('location_geocode_google_delay', 0),
+    '#default_value' => \Drupal::config('location.settings')->get('location_geocode_google_delay'),
     '#size' => 10,
   );
 
   $country = arg(5);
   if ($country) {
-    $form['location_geocode_' . $country . '_google_accuracy_code'] = array(
-      '#type' => 'select',
-      '#title' => t('Google Maps Geocoding Accuracy for %country', array('%country' => $country)),
-      '#default_value' => variable_get(
-        'location_geocode_' . $country . '_google_accuracy_code',
-        variable_get('location_geocode_google_minimum_accuracy', '3')
-      ),
-      '#options' => location_google_geocode_accuracy_codes(),
-      '#description' => t('The minimum required accuracy for the geolocation data to be saved.'),
-    );
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// $form['location_geocode_' . $country . '_google_accuracy_code'] = array(
+//       '#type' => 'select',
+//       '#title' => t('Google Maps Geocoding Accuracy for %country', array('%country' => $country)),
+//       '#default_value' => variable_get(
+//         'location_geocode_' . $country . '_google_accuracy_code',
+//         variable_get('location_geocode_google_minimum_accuracy', '3')
+//       ),
+//       '#options' => location_google_geocode_accuracy_codes(),
+//       '#description' => t('The minimum required accuracy for the geolocation data to be saved.'),
+//     );
+
   }
 
   return $form;

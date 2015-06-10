@@ -10,5 +10,5 @@
  */
 function location_user_uninstall() {
   // Delete user settings.
-  variable_del('location_settings_user');
+  \Drupal::config('location.settings')->clear('location_settings_user')->save();
 }

@@ -116,10 +116,10 @@ class location_views_handler_filter_proximity extends views_handler_filter {
       ),
       '#default_value' => $this->options['origin'] ? $this->options['origin'] : 'user',
     );
-    if (module_exists('gmap')) {
+    if (\Drupal::moduleHandler()->moduleExists('gmap')) {
       $form['origin']['#options']['latlon_gmap'] = t('Latitude / Longitude input (use map)');
     }
-    if (module_exists('geoip') || module_exists('smart_ip')) {
+    if (\Drupal::moduleHandler()->moduleExists('geoip') || \Drupal::moduleHandler()->moduleExists('smart_ip')) {
       $form['origin']['#options']['geoip'] = t("IP Address of visitor (fall back to static if unset)");
     }
 
@@ -283,13 +283,13 @@ class location_views_handler_filter_proximity extends views_handler_filter {
     $origin = $this->options['origin'];
 
     // Strip dependencies off on exposed form.
-    foreach (element_children($form[$key]) as $el) {
+    foreach (\Drupal\Core\Render\Element::children($form[$key]) as $el) {
       if (!empty($form[$key][$el]['#dependency'])) {
         $form[$key][$el]['#dependency'] = array();
       }
     }
 
-    if ($origin == 'latlon_gmap' && module_exists('gmap')) {
+    if ($origin == 'latlon_gmap' && \Drupal::moduleHandler()->moduleExists('gmap')) {
       // Bad things happen if we try to show a gmap in the views live preview.
       if (!empty($form_state['view']->live_preview)) {
         $form[$key]['proximity_map'] = array(
@@ -313,7 +313,7 @@ class location_views_handler_filter_proximity extends views_handler_filter {
     }
     else {
       if (($origin == 'user' || $origin == 'hybrid') && $this->options['expose']['user_location_choose']) {
-        global $user;
+        $user = \Drupal::currentUser();
         $user_locations = isset($user->locations) ? $user->locations : location_load_locations($user->uid, 'uid');
         $location_options = array();
         if (!empty($user_locations)) {
